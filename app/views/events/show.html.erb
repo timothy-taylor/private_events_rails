@@ -1,6 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>Creator:</strong>
+  <%= @event.user.email %>
+</p>
+
+<p>
   <strong>Date:</strong>
   <%= @event.date %>
 </p>
@@ -10,5 +15,8 @@
   <%= @event.description %>
 </p>
 
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %>
+<%= link_to 'Back', events_path %> |
+<% if current_user.eql?(@event.user) %>
+  <%= link_to 'Edit', edit_event_path(@event) %> |
+  <%= link_to 'Delete', @event, method: :delete, data: { confirm: 'Are you sure?' } %>
+<% end %>
