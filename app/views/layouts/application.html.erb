@@ -9,11 +9,24 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <body>
-      <div class="container">
-        <%= yield %>
-      </div>
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
+  <body>
+    <div class="container">
+        <div class="top_bar">
+          <div class="nav"><%= link_to 'Events', events_path %></div>
+      <% if user_signed_in? %>
+          <div class="nav"><%= link_to 'Create New Event', new_event_path %></div>
+          <div class="nav"><%= link_to 'View All Users', users_path %></div>
+          <div class="nav"><%= link_to 'View My Profile', current_user %></div>
+          <div class="nav"><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></div>
+      <% else %>
+        <div class="nav"><%= link_to 'Sign In', new_user_session_path %></div>
+      <% end %>
+        </div>
+      <div class="spacer"></div>
+
+      <%= yield %>
+    </div>
   </body>
 </html>
