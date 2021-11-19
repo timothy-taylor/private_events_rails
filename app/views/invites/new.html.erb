@@ -1,0 +1,10 @@
+<%= form_with(model: @invite, url: invites_path) do |form| %>
+  <div class="field">
+    <%= form.label :attending %>
+    <%= form.check_box :attending %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

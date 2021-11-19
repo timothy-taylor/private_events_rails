@@ -1,8 +1,9 @@
-<p id="notice"><%= notice %></p>
+<div class="events">
+<h1><%= @event.name %></h1>
 
 <p>
   <strong>Creator:</strong>
-  <%= @event.user.email %>
+  <%= link_to @event.creator.email, user_path(@event.creator) %>
 </p>
 
 <p>
@@ -15,8 +16,22 @@
   <%= @event.description %>
 </p>
 
-<%= link_to 'Back', events_path %> |
-<% if current_user.eql?(@event.user) %>
-  <%= link_to 'Edit', edit_event_path(@event) %> |
-  <%= link_to 'Delete', @event, method: :delete, data: { confirm: 'Are you sure?' } %>
+<p>
+<strong><%= Event.past.include?(@event) ? 'Attended:' : 'Attending:' %></strong>
+  <ul>
+    <% @event.invites.each do |invite| %>
+      <li>
+        <%= link_to invite.attendee.email, user_path(invite.attendee) %>
+      </li>
+    <% end %>
+  </ul>
+</p>
+</div>
+<div class="spacer"></div>
+<div class="bottom_links">
+  <div class="fields"><%= link_to 'Back', events_path %></div>
+<% if current_user.eql?(@event.creator) %>
+  <div class="fields"><%= link_to 'Edit', edit_event_path(@event) %></div>
+  <div class="fields"><%= link_to 'Delete', @event, method: :delete, data: { confirm: 'Are you sure?' } %></div>
 <% end %>
+</div>
