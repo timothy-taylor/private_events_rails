@@ -1,6 +1,6 @@
 <div class="show">
   <div>
-    <h1><%= @event.name %></h1>
+    <h1><%= @event.title %></h1>
 
     <% if current_user.eql?(@event.creator) %>
       <p>
@@ -27,7 +27,6 @@
       <% end %>
     <% end %>
     </p>
-
   </div>
   <div>
     <h2>Date:</h2>
@@ -41,25 +40,22 @@
     <%= @event.description %>
     </p>
   </div>
-
+  <div class="attends">
+    <h2>Organizer:</h2>
+    <p>
+    <%= link_to @event.creator.username, user_path(@event.creator) %>
+    </p>
+  </div>
   <% unless @event.invites.empty? %>
     <div class="attends">
       <h2><%= Event.past.include?(@event) ? 'Attended:' : 'Attending:' %></h2>
       <ul>
         <% @event.invites.each do |invite| %>
           <li>
-            <%= link_to invite.attendee.email, user_path(invite.attendee) %>
+            <%= link_to invite.attendee.username, user_path(invite.attendee) %>
           </li>
         <% end %>
       </ul>
     </div>
   <% end %>
-  <div class="attends">
-    <h2>Organizer:</h2>
-    <p>
-    <%= link_to @event.creator.email, user_path(@event.creator) %>
-    </p>
-  </div>
-
 </div>
-

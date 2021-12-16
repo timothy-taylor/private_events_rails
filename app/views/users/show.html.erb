@@ -1,31 +1,35 @@
-<h1><%= @user.email %> </h1>
-
-<% unless @user.events.empty? %>
-<h2>created events:</h2>
-<p>
-<% @user.events.each do |event| %>
-  <%= event.date %>:
-  <%= link_to event.name, event %><br>
+<h1><%= @user.username %> </h1>
+<% if current_user.eql?(@user) %>
+  <p>
+  <%= link_to "Update account", edit_user_registration_path %>
+  </p>
 <% end %>
-</p>
+<% unless @user.events.empty? %>
+  <h2>created events:</h2>
+  <p>
+  <% @user.events.each do |event| %>
+    <%= event.date %>:
+    <%= link_to event.title, event %><br>
+  <% end %>
+  </p>
 <% end %>
 
 <% unless @user.attended_events.future.empty? %>
-<h2>upcoming events:</h2>
-<p>
-<% @user.attended_events.future.each do |event| %>
-  <%= event.date %>:
-  <%= link_to event.name, event %><br>
-<% end %>
-</p>
+  <h2>upcoming events:</h2>
+  <p>
+  <% @user.attended_events.future.each do |event| %>
+    <%= event.date %>:
+    <%= link_to event.title, event %><br>
+  <% end %>
+  </p>
 <% end %>
 
 <% unless @user.attended_events.past.empty? %>
-<h2>attended events:</h2>
-<p>
-<% @user.attended_events.past.each do |event| %>
-  <%= event.date %>:
-  <%= link_to event.name,event %><br>
-<% end %>
-</p>
+  <h2>attended events:</h2>
+  <p>
+  <% @user.attended_events.past.each do |event| %>
+    <%= event.date %>:
+    <%= link_to event.title,event %><br>
+  <% end %>
+  </p>
 <% end %>
