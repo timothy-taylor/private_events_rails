@@ -12,12 +12,15 @@
 
 ActiveRecord::Schema.define(version: 2021_12_16_180623) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "events", force: :cascade do |t|
     t.date "date"
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "title"
     t.index ["user_id"], name: "index_events_on_user_id"
   end
@@ -25,8 +28,8 @@ ActiveRecord::Schema.define(version: 2021_12_16_180623) do
   create_table "invites", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "event_id"
-    t.integer "user_id"
+    t.bigint "event_id"
+    t.bigint "user_id"
     t.index ["event_id"], name: "index_invites_on_event_id"
     t.index ["user_id"], name: "index_invites_on_user_id"
   end
@@ -42,6 +45,7 @@ ActiveRecord::Schema.define(version: 2021_12_16_180623) do
     t.string "username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   add_foreign_key "events", "users"
