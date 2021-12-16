@@ -1,36 +1,65 @@
-<div class="events">
-  <h1><%= @event.name %></h1>
+<div class="show">
+  <div>
+    <h1><%= @event.name %></h1>
 
-  <p>
-  <strong>Creator:</strong>
-  <%= link_to @event.creator.email, user_path(@event.creator) %>
-  </p>
-
-  <p>
-  <strong>Date:</strong>
-  <%= @event.date %>
-  </p>
-
-  <p>
-  <strong>Description:</strong>
-  <%= @event.description %>
-  </p>
-
-  <p>
-  <strong><%= Event.past.include?(@event) ? 'Attended:' : 'Attending:' %></strong>
-  <ul>
-    <% @event.invites.each do |invite| %>
-      <li>
-        <%= link_to invite.attendee.email, user_path(invite.attendee) %>
-      </li>
+    <% if current_user.eql?(@event.creator) %>
+      <p>
+      <%= link_to 'Edit', edit_event_path(@event) %> | 
+      <%= link_to 'Delete', @event, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </p>
     <% end %>
-  </ul>
-  </p>
-</div>
-<div class="spacer"></div>
-<% if current_user.eql?(@event.creator) %>
-  <div class="bottom_links">
-    <div class="fields"><%= link_to 'Edit', edit_event_path(@event) %></div>
-    <div class="fields"><%= link_to 'Delete', @event, method: :delete, data: { confirm: 'Are you sure?' } %></div>
+
+    <p>
+    <% unless @event.invites.any?{ |e| e.attendee == current_user } %>
+      <%= link_to invites_path(@event.id), method: :post, data: { confirm: 'Are you sure you wish to attend this event?' } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="icons" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+        </svg>
+      <% end %>
+    <% else %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="checkicon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+      </svg>
+      <%= link_to invite_path(@event.invites.find_by(attendee: current_user)), method: :delete, data: { confirm: 'Are you sure you wish to un-RSVP for this event?' } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="icons" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7a4 4 0 11-8 0 4 4 0 018 0zM9 14a6 6 0 00-6 6v1h12v-1a6 6 0 00-6-6zM21 12h-6" />
+        </svg>
+      <% end %>
+    <% end %>
+    </p>
+
   </div>
-<% end %>
+  <div>
+    <h2>Date:</h2>
+    <p>
+    <%= @event.date %>
+    </p>
+  </div>
+  <div>
+    <h2>Description:</h2>
+    <p class="description">
+    <%= @event.description %>
+    </p>
+  </div>
+
+  <% unless @event.invites.empty? %>
+    <div class="attends">
+      <h2><%= Event.past.include?(@event) ? 'Attended:' : 'Attending:' %></h2>
+      <ul>
+        <% @event.invites.each do |invite| %>
+          <li>
+            <%= link_to invite.attendee.email, user_path(invite.attendee) %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="attends">
+    <h2>Organizer:</h2>
+    <p>
+    <%= link_to @event.creator.email, user_path(@event.creator) %>
+    </p>
+  </div>
+
+</div>
+

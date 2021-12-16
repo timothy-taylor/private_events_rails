@@ -10,22 +10,24 @@
       </ul>
     </div>
   <% end %>
-  <div class="form">
-    <%= form.label :date %>
-    <div class="date">
-    <%= form.date_select :date %>
-    </div>
+  <div class="form_container">
+    <div class="form">
+      <%= form.label :date %>
+      <div class="date">
+        <%= form.date_select :date %>
+      </div>
 
-    <%= form.label :name %>
-    <div class="fields">
-    <%= form.text_area :name %>
-    </div>
+      <%= form.label :name %>
+      <div class="fields">
+        <%= form.text_area :name %>
+      </div>
 
-    <%= form.label :description %>
-    <div class="fields">
-    <%= form.text_area :description %>
-    </div>
+      <%= form.label :description %>
+      <div class="fields">
+        <%= form.text_area :description %>
+      </div>
 
-    <%= form.submit %>
+      <%= form.submit %>
+    </div>
   </div>
 <% end %>
