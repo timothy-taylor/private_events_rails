@@ -1,6 +1,6 @@
 class Event < ApplicationRecord
-  validates :title, presence: true, length: { in: 2..20 }
-  validates :description, length: { maximum: 120 }
+  validates :title, presence: true, length: { in: 2..30 }
+  validates :description, length: { maximum: 320 }
 
   has_many :invites
   has_many :attendees, through: :invites
